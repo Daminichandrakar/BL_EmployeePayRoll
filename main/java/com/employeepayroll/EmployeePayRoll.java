@@ -1,44 +1,38 @@
 package com.employeepayroll;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class EmployeePayRoll {
-
 	public static void main(String[] args) {
-		DBConfig dbConfig = new DBConfig();
-		dbConfig.getConnection();
-		String Fetch = "select * from employee_payroll";
-		ArrayList<Employee> empList = new ArrayList<Employee>();
-		PreparedStatement preparedStatement;
-		try {
-			preparedStatement = dbConfig.getConnection().prepareStatement(Fetch);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Employee employee = new Employee();
+		EmployeePayRollServices employeePayRollService = new EmployeePayRollServices();
+		Scanner scanner = new Scanner(System.in);
 
-				employee.setID(resultSet.getInt("ID"));
-				employee.setName(resultSet.getString("Name"));
-				employee.setPhoneNumber(resultSet.getInt("PhoneNumber"));
-				employee.setAddress(resultSet.getString("Address"));
-				employee.setDepartment(resultSet.getString("Department"));
-				employee.setStart(resultSet.getString("Start"));
-				employee.setBasicPay(resultSet.getDouble("BasicPay"));
-				employee.setDeductions(resultSet.getDouble("Deductions"));
-				employee.setTaxablePay(resultSet.getDouble("TaxablePay"));
-				employee.setIncomeTax(resultSet.getDouble("IncomeTax"));
-				employee.setNetPay(resultSet.getDouble("NetPay"));
+		final int EXIT = 10;
+		int choice = 0;
+		while (choice != EXIT) {
+			System.out.println(
+					"enter your choice\n1. Get employee data\n2. update basic pay\n3. display employee roll\n4. Exit");
+			choice = scanner.nextInt();
+			switch (choice) {
+			case 1:
+				String query = "select * from employee_payroll";
+				employeePayRollService.getData(query);
+				employeePayRollService.print();
+				break;
 
-				empList.add(employee);
+			case 2:
+				System.out.println("enter employee name");
+				String empName = scanner.next();
+				System.out.println("enter basic pay you want to update");
+				double basicPay = scanner.nextDouble();
+				employeePayRollService.updateData(empName, basicPay);
+				break;
+
+			case 3:
+				employeePayRollService.print();
+			case 4:
+				System.out.println("exit");
 			}
-			for (Employee i : empList) {
-				System.out.println(i.toString());
-			}
-		} catch (SQLException e) {
-			throw new EmployeeException("invalid column label");
 		}
 	}
-
 }
