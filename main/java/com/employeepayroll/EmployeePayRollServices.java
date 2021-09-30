@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -77,4 +78,36 @@ public class EmployeePayRollServices {
 		return 0.0;
 	}
 
+	public void getEmployee(LocalDate start , LocalDate end) {
+		ArrayList<Employee> empDataList = new ArrayList<Employee>();
+		String SELECT = "Select * from employee_payroll where Start Between ? AND ?";
+		String startDate = String.valueOf(start);
+		String endDate = String.valueOf(end);
+		try {
+			preparedStatement = con.prepareStatement(SELECT);
+			preparedStatement.setString(1, startDate);
+			preparedStatement.setString(2, endDate);
+		  	ResultSet resultSet = preparedStatement.executeQuery();
+		  	while (resultSet.next()) {
+				Employee employee = new Employee();
+
+				employee.setID(resultSet.getInt("ID"));
+				employee.setName(resultSet.getString("Name"));
+				employee.setPhoneNumber(resultSet.getInt("PhoneNumber"));
+				employee.setAddress(resultSet.getString("Address"));
+				employee.setDepartment(resultSet.getString("Department"));
+				employee.setStart(resultSet.getString("Start"));
+				employee.setBasicPay(resultSet.getDouble("BasicPay"));
+				employee.setDeductions(resultSet.getDouble("Deductions"));
+				employee.setTaxablePay(resultSet.getDouble("TaxablePay"));
+				employee.setIncomeTax(resultSet.getDouble("IncomeTax"));
+				employee.setNetPay(resultSet.getDouble("NetPay"));
+
+				empDataList.add(employee);
+			}
+		} catch (SQLException e) {
+			throw new EmployeeException("invalid date ,pls set valid date");
+		}
+
+	}
 }

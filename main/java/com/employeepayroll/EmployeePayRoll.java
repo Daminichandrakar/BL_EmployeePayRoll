@@ -1,5 +1,6 @@
 package com.employeepayroll;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class EmployeePayRoll {
@@ -11,7 +12,7 @@ public class EmployeePayRoll {
 		int choice = 0;
 		while (choice != EXIT) {
 			System.out.println(
-					"enter your choice\n1. Get employee data\n2. update basic pay\n3. display employee roll\n4. Exit");
+					"enter your choice\n1. Get employee data\n2. update basic pay\n3. display employee roll\n4. empdata range  \n5. Exit");
 			choice = scanner.nextInt();
 			switch (choice) {
 			case 1:
@@ -31,7 +32,15 @@ public class EmployeePayRoll {
 			case 3:
 				employeePayRollService.print();
 			case 4:
+				System.out.println("enter starting date");
+                LocalDate sDate = LocalDate.parse(scanner.next());
+                System.out.println("enter final date");
+                LocalDate eDate = LocalDate.parse(scanner.next());
+                employeePayRollService.getEmployee(sDate, eDate);
+                break;
+			case 5:
 				System.out.println("exit");
+				break;
 			}
 		}
 	}
