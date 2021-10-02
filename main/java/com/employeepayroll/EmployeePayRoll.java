@@ -12,7 +12,7 @@ public class EmployeePayRoll {
 		int choice = 0;
 		while (choice != EXIT) {
 			System.out.println(
-					"enter your choice\n1. Get employee data\n2. update basic pay\n3. display employee roll\n4. empdata range  \n5. Exit");
+					"enter your choice\n1. Get employee data\n2. update basic pay\n3. display employee roll\n4. empdata range  \n5. calculate \n6. EXIT\n");
 			choice = scanner.nextInt();
 			switch (choice) {
 			case 1:
@@ -39,6 +39,9 @@ public class EmployeePayRoll {
                 employeePayRollService.getEmployee(sDate, eDate);
                 break;
 			case 5:
+				employeePayRollService.calculate();
+				break;
+			case 6: 
 				System.out.println("exit");
 				break;
 			}
